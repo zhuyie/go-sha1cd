@@ -22,7 +22,7 @@ const BlockSize = 64
 // SHA1CD implements hash.Hash to computing the SHA1 checksum.
 type SHA1CD struct {
 	ctx C.SHA1_CTX
-	sum [20]byte
+	sum [Size]byte
 }
 
 // New returns a new SHA1CD.
@@ -52,6 +52,9 @@ func (s *SHA1CD) Sum(b []byte) []byte {
 
 func (s *SHA1CD) Reset() {
 	C.SHA1DCInit(&s.ctx)
+	for i := 0; i < Size; i++ {
+		s.sum[i] = 0
+	}
 }
 
 func (s *SHA1CD) Size() int { return Size }
